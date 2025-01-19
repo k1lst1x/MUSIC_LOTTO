@@ -1,0 +1,33 @@
+.home-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    color: #ffffff;
+    padding: 20px;
+}
+
+.home-box {
+    width: 500px;
+    max-width: 100%;
+}
+
+.login-logo, .register-logo {
+    font-size: 2.1rem;
+    font-weight: 300;
+    margin-bottom: 0.9rem;
+    text-align: center;
+}
+
+/* Приветствие */
+.home-box h2 {
+    margin-bottom: 15px;
+    font-size: 24px;
+}
+
+/* Описание */
+.home-box p {
+    font-size: 16px;
+    margin-bottom: 20px;
+}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block links %}
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="home-container">
+    <div class="home-box">
+        <div class="login-logo text-center">
+            <h1>
+                <a href="{% url 'home' %}" class="text-decoration-none">
+                    <picture>
+                        <source srcset="/static/MUSIC_LOTTO.png" media="(prefers-color-scheme: dark)">
+                        <img src="/static/MUSIC_LOTTO.png" alt="MUSIC LOTTO Панель управления" class="img-fluid">
+                    </picture>
+                </a>
+            </h1>
+        </div>    
+        <h1>Регистрация</h1>
+        <hr>
+
+        <form action="{% url 'register' %}" method="post">
+            {{ form }}
+            {% csrf_token %}
+        <button type="submit" class="btn btn-success">Продолжить</button>
+        </form>
+        <hr>
+        У вас уже есть учетная запись? <a href="{% url 'login' %}">Войти</a>
+    </div>
+</div>
+{% endblock %}

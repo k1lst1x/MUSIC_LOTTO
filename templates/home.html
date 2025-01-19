@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block links %}
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="home-container">
+    <div class="home-box">
+        <div class="login-logo text-center">
+            <h1>
+                <a href="{% url 'home' %}" class="text-decoration-none">
+                    <picture>
+                        <source srcset="/static/MUSIC_LOTTO.png" media="(prefers-color-scheme: dark)">
+                        <img src="/static/MUSIC_LOTTO.png" alt="MUSIC LOTTO Панель управления" class="img-fluid">
+                    </picture>
+                </a>
+            </h1>
+        </div>
+        {% if user.is_authenticated %}
+            <h2>Добро пожаловать, {{ user.username }}!</h2>
+            <p>Рады видеть вас снова в MUSIC LOTTO.</p>
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Logout</button>
+            </form>
+        {% else %}
+            <h2>Приветствуем вас в MUSIC LOTTO!</h2>
+            <p>Войдите в систему или зарегистрируйтесь, чтобы начать.</p>
+            <form action="{% url 'login' %}" method="get" class="action-form">
+                <button type="submit" class="btn btn-primary">Войти</button>
+            </form>
+            <hr>
+            <form action="{% url 'register' %}" method="get" class="action-form">
+                <button type="submit" class="btn btn-secondary">Зарегистрироваться</button>
+            </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

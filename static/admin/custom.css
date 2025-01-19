@@ -1,0 +1,80 @@
+/* Общие стили для сайта */
+body {
+    background-color: #000000 !important; /* Черный фон */
+    color: #ffffff !important; /* Белый текст */
+}
+
+/* Основная часть страницы */
+.content-wrapper {
+    background-color: #000000 !important; /* Черный фон */
+    color: #ffffff !important; /* Белый текст */
+}
+
+/* Логотип и боковая панель */
+.brand-link {
+    background-color: #7a044e !important; /* Темно-бордовый фон */
+    color: #ffffff !important; /* Белый текст */
+}
+
+/* Настройка боковой панели */
+.main-sidebar {
+    background-color: #7a044e !important; /* Темно-бордовый фон */
+    color: #ffffff !important; /* Белый текст */
+}
+
+.sidebar a {
+    color: #ffffff !important; /* Белый текст */
+}
+.sidebar a:hover {
+    color: #7a044e !important; /* Бордовый текст при наведении */
+}
+
+.sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active,
+.sidebar-light-primary .nav-sidebar>.nav-item>.nav-link.active {
+    background-color: #7a044e !important; /* Бордовый фон для активного пункта */
+    color: #ffffff !important; /* Белый текст */
+}
+
+/* Верхняя панель */
+.navbar {
+    background-color: #000000 !important; /* Черный фон */
+    color: #ffffff !important; /* Белый текст */
+}
+
+/* Таблицы */
+.table {
+    background-color: #000000 !important; /* Черный фон таблиц */
+    color: #ffffff !important; /* Белый текст */
+}
+.table th, .table td {
+    border-color: #7a044e !important; /* Бордовая рамка */
+}
+
+/* Кнопки */
+.btn {
+    background-color: #7a044e !important; /* Бордовый фон кнопок */
+    color: #ffffff !important; /* Белый текст */
+}
+.btn:hover {
+    background-color: #ffffff !important; /* Белый фон при наведении */
+    color: #7a044e !important; /* Бордовый текст */
+}
+
+/* Подвал */
+.main-footer {
+    background-color: #000000 !important; /* Черный фон подвала */
+    color: #ffffff !important; /* Белый текст */
+}
+
+/* Заголовки */
+h1, h2, h3, h4, h5, h6 {
+    color: #7a044e !important; /* Бордовый цвет заголовков */
+}
+
+/* Ссылки */
+a {
+    color: #7a044e !important; /* Бордовый цвет ссылок */
+}
+a:hover {
+    color: #ffffff !important; /* Белый цвет ссылок при наведении */
+}
