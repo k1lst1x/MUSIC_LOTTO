@@ -21,13 +21,20 @@
         {% if user.is_authenticated %}
             <h2>Добро пожаловать, {{ user.username }}!</h2>
             <p>Рады видеть вас снова в MUSIC LOTTO.</p>
+            <div class="centered-btn">
+                <a href="" class="clickable-img-wrapper">
+                    <img src="/static/headphones.svg" 
+                         alt="Перейти на страницу загрузки и генерации" 
+                         class="clickable-img">
+                </a>
+            </div>
             <form action="{% url 'logout' %}" method="post">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger">Logout</button>
             </form>
         {% else %}
-            <h2>Приветствуем вас в MUSIC LOTTO!</h2>
-            <p>Войдите в систему или зарегистрируйтесь, чтобы начать.</p>
+            <!-- <h2>Приветствуем вас в MUSIC LOTTO!</h2>
+            <p>Войдите в систему или зарегистрируйтесь, чтобы начать.</p> -->
             <form action="{% url 'login' %}" method="get" class="action-form">
                 <button type="submit" class="btn btn-primary">Войти</button>
             </form>

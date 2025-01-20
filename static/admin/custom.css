@@ -77,4 +77,5 @@ a {
 }
 a:hover {
     color: #ffffff !important; /* Белый цвет ссылок при наведении */
+    text-decoration: none !important;
 }
