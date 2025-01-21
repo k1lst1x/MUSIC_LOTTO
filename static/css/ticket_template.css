@@ -1,0 +1,62 @@
+body {
+    font-family: Arial, sans-serif;
+    color: black;
+    margin: 0;
+    padding: 0;
+}
+.ticket {
+    width: 500px;
+    margin: 0px auto;
+    background-color: #fff;
+    border: 1px solid #fff;
+    padding: 1px 2px 2px 2px;
+    box-sizing: border-box;
+    page-break-inside: avoid;
+    min-height: 560px;
+}
+table {
+    width: 490px;
+    border-collapse: collapse;
+}
+.logo {
+    width: 160px;
+    height: 70px;
+    position: absolute;
+    right:20px;
+    top:20px;
+}
+.rules {
+    width: 500px;
+    height: 200px;
+    position: absolute;
+    left:0px;
+    bottom:-180px;
+}
+td {
+    width: 80px;
+    height: 80px;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #FFF;
+    color: black;
+    border: 1px solid darkgrey;
+    font-size: 14px;
+    overflow: hidden;
+}
+.ticket-row {
+    display: flex;
+    justify-content: space-around;
+    align-items: start;
+    background-color: #fff;
+    margin-bottom: 0; /* Добавьте отступы между рядами, если нужно */
+}
+
+.ticket {
+    flex: 0 0 50%; /* Занимает чуть меньше половины контейнера, чтобы поместиться два билета */
+    position: relative;
+}
+
+@page {
+    size: A4 landscape;
+    margin: 10mm; /* Уменьшите поля страницы */
+}

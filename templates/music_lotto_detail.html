@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block links %}
+    <link rel="stylesheet" href="{% static 'css/music_lotto_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <h1>{{ music_lotto.name }}</h1>
+    <p><strong>Created:</strong> {{ music_lotto.created_at|date:"d M Y H:i" }}</p>
+    <p><strong>Last Edited:</strong> {{ music_lotto.edited_at|date:"d M Y H:i" }}</p>
+    <p><strong>Status:</strong> {{ music_lotto.is_active|yesno:"Active,Inactive" }}</p>
+
+    <h2>Playlist Files</h2>
+    <ul>
+        {% for file in music_lotto.playlist_files.all %}
+            <li>
+                <a href="{{ file.file.url }}" download>{{ file.file.name }}</a>
+            </li>
+        {% empty %}
+            <p>No playlist files uploaded.</p>
+        {% endfor %}
+    </ul>
+
+    <div class="btn-group" role="group" aria-label="Actions">
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" name="generate" class="btn btn-primary">Сгенерировать</button>
+        </form>
+
+        <form method="POST">
+            {% csrf_token %}
+            <label for="ticket_count">Количество билетов:</label>
+            <input type="number" name="ticket_count" id="ticket_count" value="{{ default_ticket_count }}" min="1" required>
+            <button type="submit" name="create_tickets" class="btn btn-primary">Создать билеты</button>
+        </form>
+
+        <!-- Кнопка для скачивания билетов -->
+        <a href="" class="btn btn-warning">Скачать билеты</a>
+    </div>
+
+    <a href="{% url 'music_lotto_list' %}" class="btn btn-secondary">Back to List</a>
+{% endblock %}

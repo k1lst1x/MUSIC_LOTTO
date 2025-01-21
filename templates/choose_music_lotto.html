@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block links %}
+    <link rel="stylesheet" href="{% static 'css/music_lotto_list.css' %}">
+{% endblock %}
+
+{% block content %}
+    <h1>Music Lottos</h1>
+    <a href="{% url 'create_music_lotto' %}" class="btn btn-primary">Create New Lotto</a>
+    <ul class="music-lotto-list">
+        {% for lotto in music_lottos %}
+            <li>
+                <a href="{% url 'music_lotto_detail' lotto.id %}">
+                    {{ lotto.name }} (Created: {{ lotto.created_at|date:"d M Y" }})
+                </a>
+            </li>
+        {% empty %}
+            <p>No music lottos available. <a href="{% url 'create_music_lotto' %}">Create one</a>!</p>
+        {% endfor %}
+    </ul>
+{% endblock %}
