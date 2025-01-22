@@ -25,4 +25,4 @@ class MusicLottoForm(forms.ModelForm):
 
     class Meta:
         model = MusicLotto
-        fields = ['is_active']  # Указываем только поля из модели MusicLotto
+        fields = ['name', 'is_active']  # Указываем только поля из модели MusicLotto

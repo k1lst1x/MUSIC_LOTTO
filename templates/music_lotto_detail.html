@@ -20,33 +20,58 @@
     <p><strong>Last Edited:</strong> {{ music_lotto.edited_at|date:"d M Y H:i" }}</p>
     <p><strong>Status:</strong> {{ music_lotto.is_active|yesno:"Active,Inactive" }}</p>
 
-    <h2>Playlist Files</h2>
-    <ul>
-        {% for file in music_lotto.playlist_files.all %}
-            <li>
-                <a href="{{ file.file.url }}" download>{{ file.file.name }}</a>
-            </li>
-        {% empty %}
-            <p>No playlist files uploaded.</p>
-        {% endfor %}
-    </ul>
+    <div class="content-container">
+        <!-- Блок кнопок -->
+        <div class="btn-column">
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" name="generate" class="btn btn-primary">Сгенерировать</button>
+            </form>
 
-    <div class="btn-group" role="group" aria-label="Actions">
-        <form method="post">
-            {% csrf_token %}
-            <button type="submit" name="generate" class="btn btn-primary">Сгенерировать</button>
-        </form>
+            <form method="POST">
+                {% csrf_token %}
+                <label for="ticket_count">Количество билетов:</label>
+                <input type="number" name="ticket_count" id="ticket_count" value="{{ default_ticket_count }}" min="1" required>
+                <button type="submit" name="create_tickets" class="btn btn-primary">Создать билеты</button>
+            </form>
 
-        <form method="POST">
-            {% csrf_token %}
-            <label for="ticket_count">Количество билетов:</label>
-            <input type="number" name="ticket_count" id="ticket_count" value="{{ default_ticket_count }}" min="1" required>
-            <button type="submit" name="create_tickets" class="btn btn-primary">Создать билеты</button>
-        </form>
+            {% if tickets_pdf_exists %}
+            <a href="{{ tickets_pdf_url }}" class="btn btn-primary" download>Скачать билеты</a>
+            {% else %}
+                <button class="btn btn-primary" disabled>Билеты не найдены</button>
+            {% endif %}
+            <form action="{% url 'music_lotto_list' %}" method="get" class="action-form">
+                <button type="submit" class="btn btn-secondary">Back to List</button>
+            </form>
+        </div>
 
-        <!-- Кнопка для скачивания билетов -->
-        <a href="" class="btn btn-warning">Скачать билеты</a>
+        <!-- Прокручиваемая таблица -->
+        <div class="scrollable-table-container">
+            <table class="playlist-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Track Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for file in music_lotto.playlist_files.all %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ file.file.name }}</td>
+                        <td>
+                            <a href="{{ file.file.url }}" download>Download</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3">No playlist files uploaded.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    <a href="{% url 'music_lotto_list' %}" class="btn btn-secondary">Back to List</a>
 {% endblock %}

@@ -20,9 +20,9 @@
         </div>
         {% if user.is_authenticated %}
             <h2>Добро пожаловать, {{ user.username }}!</h2>
-            <p>Рады видеть вас снова в MUSIC LOTTO.</p>
+            <!-- <p>Рады видеть вас снова в MUSIC LOTTO.</p> -->
             <div class="centered-btn">
-                <a href="" class="clickable-img-wrapper">
+                <a href="{% url 'music_lotto_list' %}" class="clickable-img-wrapper">
                     <img src="/static/headphones.svg" 
                          alt="Перейти на страницу загрузки и генерации" 
                          class="clickable-img">

@@ -42,15 +42,15 @@
 
 /* Контейнер для изображения */
 .clickable-img-wrapper {
-    width: 210px; /* Фиксированный размер круга */
-    height: 195px;
+    width: 112px; /* Фиксированный размер круга */
+    height: 105px;
     border-radius: 50%; /* Круглый вид */
     overflow: hidden; /* Обрезка содержимого за пределами круга */
     border: 5px solid transparent; /* Рамка */
     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
     border-color: #ffffff; /* Цвет рамки при наведении */
     transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-    padding: 30px;
+    padding: 20px;
     margin: 20px;
 }
 

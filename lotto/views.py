@@ -33,16 +33,19 @@ def music_lotto_detail(request, id):
     # Путь к папке с треками
     folder_path = os.path.join('uploads', 'music_lotto', str(id))
     excel_file_path = f"{folder_path}.xlsx"
+    tickets_pdf_path = os.path.join(folder_path, "tickets.pdf")
+
+    # Проверка наличия PDF-файла
+    tickets_pdf_exists = os.path.exists(tickets_pdf_path)
+    tickets_pdf_url = f"/{folder_path}/tickets.pdf" if tickets_pdf_exists else None
 
     if request.method == 'POST':
         # Обработка кнопки "Сгенерировать"
         if 'generate' in request.POST:
-            # Проверяем, существует ли папка
             if not os.path.exists(folder_path):
                 messages.error(request, "Папка с треками не найдена.")
                 return redirect('music_lotto_detail', id=id)
 
-            # Запускаем скрипт generate.py
             try:
                 script_path = os.path.join(os.path.dirname(__file__), 'generate.py')
                 result = subprocess.run(
@@ -51,7 +54,6 @@ def music_lotto_detail(request, id):
                     stderr=subprocess.PIPE,
                     text=True
                 )
-                # Проверяем успешность выполнения
                 if result.returncode == 0:
                     messages.success(request, f"Файл успешно сгенерирован: {excel_file_path}")
                 else:
@@ -61,15 +63,11 @@ def music_lotto_detail(request, id):
 
         # Обработка кнопки "Создать билеты"
         elif 'create_tickets' in request.POST:
-            # Получаем количество билетов из формы
-            ticket_count = request.POST.get('ticket_count', 1)  # По умолчанию 1 билет
-
-            # Проверяем наличие Excel файла
+            ticket_count = request.POST.get('ticket_count', 1)
             if not os.path.exists(excel_file_path):
                 messages.error(request, "Файл с треками не найден. Сначала сгенерируйте его.")
                 return redirect('music_lotto_detail', id=id)
 
-            # Запускаем скрипт tickets.py
             try:
                 script_path = os.path.join(os.path.dirname(__file__), 'tickets.py')
                 result = subprocess.run(
@@ -78,12 +76,10 @@ def music_lotto_detail(request, id):
                     stderr=subprocess.PIPE,
                     text=True
                 )
-                # Проверяем успешность выполнения
                 if result.returncode == 0:
                     messages.success(request, "Билеты успешно созданы.")
                 else:
                     messages.error(request, f"Ошибка создания билетов: {result.stderr}")
-                    print(os.getcwd())
             except Exception as e:
                 messages.error(request, f"Ошибка выполнения команды: {str(e)}")
 
@@ -92,6 +88,8 @@ def music_lotto_detail(request, id):
     # Рендерим страницу
     return render(request, 'music_lotto_detail.html', {
         'music_lotto': music_lotto,
-        'default_ticket_count': 1,  # По умолчанию количество билетов
+        'default_ticket_count': 1,
+        'tickets_pdf_exists': tickets_pdf_exists,
+        'tickets_pdf_url': tickets_pdf_url,
     })
 

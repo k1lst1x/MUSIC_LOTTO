@@ -1,0 +1,91 @@
+/* Заголовок */
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 2rem;
+    color: #ffffff;
+}
+
+/* Кнопка создания новой лотереи */
+a.btn.btn-primary {
+    display: block;
+    width: 200px;
+    margin: 20px auto;
+    text-align: center;
+    background-color: #4f0334; /* Черно-фиолетовый */
+    color: #ffffff;
+    padding: 10px;
+    font-size: 1rem;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+a.btn.btn-primary:hover {
+    background-color: #670447; /* Ярче фиолетовый */
+}
+
+/* Список музыкальных лотерей */
+.music-lotto-list {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 0;
+    list-style-type: none;
+}
+
+.music-lotto-list li {
+    background-color: #1c1c1c; /* Темный фон для лотерей */
+    border: 1px solid #4f0334; /* Черно-фиолетовый */
+    border-radius: 8px;
+    margin-bottom: 10px;
+    padding: 15px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.music-lotto-list li:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.music-lotto-list li a {
+    text-decoration: none;
+    color: #ffffff; /* Черно-фиолетовый */
+    font-size: 1.2rem;
+}
+
+.music-lotto-list li a:hover {
+    color: #670447; /* Ярче фиолетовый */
+    text-decoration: underline;
+}
+
+/* Пустое состояние */
+.music-lotto-list p {
+    text-align: center;
+    font-size: 1rem;
+    color: #bbb; /* Светлый серый */
+}
+
+.music-lotto-list p a {
+    color: #4f0334;
+    text-decoration: none;
+}
+
+.music-lotto-list p a:hover {
+    text-decoration: underline;
+    color: #670447;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    a.btn.btn-primary {
+        width: 100%;
+    }
+
+    .music-lotto-list {
+        padding: 0 10px;
+    }
+
+    .music-lotto-list li {
+        padding: 10px;
+    }
+}

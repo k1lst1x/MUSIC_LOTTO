@@ -1,0 +1,88 @@
+/* Фон страницы */
+body {
+    background: linear-gradient(135deg, #000000, #4f0334);
+    color: #ffffff;
+}
+
+/* Заголовок */
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 2rem;
+    color: #ffffff;
+}
+
+/* Стиль формы */
+form {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #1c1c1c; /* Темный фон формы */
+    border: 1px solid #4f0334; /* Черно-фиолетовый */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Стили для элементов формы */
+form p {
+    margin: 10px 0;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: #fff; /* Белый цвет для текста меток */
+}
+
+input[type="text"],
+input[type="file"],
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #4f0334; /* Черно-фиолетовый */
+    border-radius: 4px;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    background-color: #2d2d2d; /* Темный фон для ввода */
+    color: #fff; /* Белый цвет для текста ввода */
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Кнопка */
+button {
+    display: inline-block;
+    background-color: #4f0334; /* Черно-фиолетовый */
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #670447; /* Ярче фиолетовый */
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    form {
+        padding: 15px;
+    }
+
+    button {
+        width: 100%;
+    }
+}

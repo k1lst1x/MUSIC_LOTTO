@@ -1,5 +1,14 @@
 from django.db import models
+from django.utils.text import get_valid_filename
+from django.core.files.storage import FileSystemStorage
 import os
+
+class CustomFileSystemStorage(FileSystemStorage):
+    def get_valid_name(self, name):
+        # Сохраняем пробелы, вместо замены их на подчёркивания
+        return get_valid_filename(name).replace("_", " ")
+
+custom_storage = CustomFileSystemStorage()
 
 def upload_to(instance, filename):
     """Динамический путь для сохранения файлов."""
@@ -26,7 +35,7 @@ class PlaylistFile(models.Model):
         on_delete=models.CASCADE,
         verbose_name="Музыкальная лотерея"
     )
-    file = models.FileField(upload_to=upload_to, verbose_name="Файл плейлиста")
+    file = models.FileField(upload_to=upload_to, storage=custom_storage, verbose_name="Файл плейлиста")
 
     def __str__(self):
         return os.path.basename(self.file.name)
