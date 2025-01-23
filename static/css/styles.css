@@ -63,6 +63,34 @@ label {
     margin-bottom: 10px;
 }
 
+.btn {
+    background: none;
+    color: #ffffff;
+    border: 3px solid #ffffff; /* Жирная белая рамка */
+    padding: 14px 20px; /* Увеличенный внутренний отступ */
+    font-size: 18px; /* Увеличенный размер текста */
+    font-weight: bold; /* Жирный текст */
+    border-radius: 50px; /* Круглые углы */
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.3s, transform 0.2s, color 0.3s, border-color 0.3s;
+    text-transform: uppercase; /* Текст заглавными буквами для акцента */
+}
+
+.btn:hover {
+    background: linear-gradient(135deg, #ffffff, #d11c6a); /* Градиент при наведении */
+    color: #4f0334; /* Бордовый текст */
+    border-color: #d11c6a; /* Бордовый бордер */
+    transform: translateY(-2px); /* Легкий эффект приподнятия */
+}
+
+.btn:active {
+    transform: translateY(0); /* Сброс эффекта при клике */
+    background: #4f0334; /* Однородный фон */
+    color: #ffffff; /* Белый текст */
+    border-color: #ffffff; /* Возврат к белому бордеру */
+}
+
 /* Кнопка отправки */
 button[type="submit"] {
     background: none;

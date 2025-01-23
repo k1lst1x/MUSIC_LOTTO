@@ -25,23 +25,38 @@
         <div class="btn-column">
             <form method="post">
                 {% csrf_token %}
-                <button type="submit" name="generate" class="btn btn-primary">Сгенерировать</button>
+                <button type="submit" name="generate" class="btn">Сгенерировать</button>
             </form>
 
             <form method="POST">
                 {% csrf_token %}
-                <label for="ticket_count">Количество билетов:</label>
-                <input type="number" name="ticket_count" id="ticket_count" value="{{ default_ticket_count }}" min="1" required>
-                <button type="submit" name="create_tickets" class="btn btn-primary">Создать билеты</button>
+                <div class="mb-3">
+                    <label for="ticket_count" class="form-label">Количество билетов:</label>
+                    <input 
+                        type="number" 
+                        name="ticket_count" 
+                        id="ticket_count" 
+                        class="form-control" 
+                        value="{{ default_ticket_count }}" 
+                        min="1" 
+                        required>
+                </div>
+                <button type="submit" name="create_tickets" class="btn">Создать билеты</button>
             </form>
 
             {% if tickets_pdf_exists %}
-            <a href="{{ tickets_pdf_url }}" class="btn btn-primary" download>Скачать билеты</a>
+            <a href="{{ tickets_pdf_url }}" class="btn" download>Скачать билеты</a>
             {% else %}
-                <button class="btn btn-primary" disabled>Билеты не найдены</button>
+                <button class="btn" disabled>Билеты не найдены</button>
             {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" name="show_tracks" class="btn btn-primary">Вывод треков</button>
+            </form>
+
             <form action="{% url 'music_lotto_list' %}" method="get" class="action-form">
-                <button type="submit" class="btn btn-secondary">Back to List</button>
+                <button type="submit" class="btn">Вернуться к списку</button>
             </form>
         </div>
 

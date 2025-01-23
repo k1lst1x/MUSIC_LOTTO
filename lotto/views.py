@@ -83,6 +83,23 @@ def music_lotto_detail(request, id):
             except Exception as e:
                 messages.error(request, f"Ошибка выполнения команды: {str(e)}")
 
+        # Обработка кнопки "Вывод треков"
+        elif 'show_tracks' in request.POST:
+            try:
+                script_path = os.path.join(os.path.dirname(__file__), 'play4.py')
+                result = subprocess.run(
+                    [sys.executable, script_path, folder_path],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True
+                )
+                if result.returncode == 0:
+                    messages.success(request, "Треки успешно выведены.")
+                else:
+                    messages.error(request, f"Ошибка вывода треков: {result.stderr}")
+            except Exception as e:
+                messages.error(request, f"Ошибка выполнения команды: {str(e)}")
+
         return redirect('music_lotto_detail', id=id)
 
     # Рендерим страницу
