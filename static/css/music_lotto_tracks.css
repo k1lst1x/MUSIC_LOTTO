@@ -1,0 +1,157 @@
+/* Контейнер для номеров треков */
+#track-numbers-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+/* Стили номеров треков */
+.track-number {
+	font-size: 50px;
+    font-weight: 400;
+    font-style: normal;
+    color: rgb(255, 255, 255);
+    font-kerning: none;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+}
+
+/* Список последних треков */
+#recent-tracks {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    max-width: 1600px;
+    text-align: center;
+}
+
+/* Список последних треков */
+#recent-tracks li {
+	font-size: 40px;
+    font-weight: 400;
+    font-style: normal;
+    color: rgb(255, 255, 255);
+    font-kerning: none;
+    text-decoration: none;
+    margin: 5px 0;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+
+h1, h2 {
+    color: #fff;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 20px;
+}
+
+h2 {
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+/* Список треков */
+#track-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    max-width: 600px;
+}
+
+#track-list li {
+    margin: 5px 0;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+/* Форма выбора трека */
+label {
+    font-weight: bold;
+}
+
+div {
+    margin-bottom: 15px;
+}
+
+input[type="number"] {
+    width: 60px;
+    padding: 5px;
+    margin-right: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+}
+
+button {
+    color: #ffffff;
+    padding: 7px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* Состояние трека */
+#state p {
+    margin: 5px 0;
+}
+
+#current-track {
+    font-weight: bold;
+    color: #28a745;
+}
+
+#played-tracks {
+    color: #fff;
+}
+
+/* Bingo информация */
+#bingo-info p {
+    margin: 5px 0;
+}
+
+/* Аудиоплеер */
+audio {
+    display: block;
+    margin: 20px auto;
+    max-width: 600px;
+}
+
+/* Центровка контента */
+#track-list,
+#state,
+#bingo-info,
+audio {
+    margin: 0 auto;
+    max-width: 600px;
+}
+
+/* Мобильные устройства */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    button {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    input[type="number"] {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    audio {
+        width: 100%;
+    }
+}

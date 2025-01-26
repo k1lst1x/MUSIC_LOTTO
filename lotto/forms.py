@@ -2,7 +2,11 @@ from django import forms
 from .models import MusicLotto
 
 class MultipleFileInput(forms.ClearableFileInput):
-    allow_multiple_selected = True  # Включаем поддержку нескольких файлов
+    allow_multiple_selected = True
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.attrs.update({"multiple": "multiple"})
 
 class MultipleFileField(forms.FileField):
     def __init__(self, *args, **kwargs):

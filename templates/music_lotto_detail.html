@@ -15,78 +15,255 @@
         {% endfor %}
     </div>
     {% endif %}
-    <h1>{{ music_lotto.name }}</h1>
-    <p><strong>Created:</strong> {{ music_lotto.created_at|date:"d M Y H:i" }}</p>
-    <p><strong>Last Edited:</strong> {{ music_lotto.edited_at|date:"d M Y H:i" }}</p>
-    <p><strong>Status:</strong> {{ music_lotto.is_active|yesno:"Active,Inactive" }}</p>
 
-    <div class="content-container">
-        <!-- Блок кнопок -->
-        <div class="btn-column">
-            <form method="post">
-                {% csrf_token %}
-                <button type="submit" name="generate" class="btn">Сгенерировать</button>
-            </form>
+    <!-- <h1 class="text-center">{{ music_lotto.name }}</h1>
+    <p class="text-center"><strong>Создано:</strong> {{ music_lotto.created_at|date:"d M Y H:i" }}</p>
+    <p class="text-center"><strong>Последнее изменение:</strong> {{ music_lotto.edited_at|date:"d M Y H:i" }}</p>
+    <p class="text-center"><strong>Статус:</strong> {{ music_lotto.is_active|yesno:"Активно,Неактивно" }}</p> -->
+    <div class="login-logo text-center">
+        <h1>
+            <a href="{% url 'home' %}" class="text-decoration-none">
+                <picture>
+                    <source srcset="/static/MUSIC_LOTTO.png" media="(prefers-color-scheme: dark)">
+                    <img src="/static/MUSIC_LOTTO.png" alt="MUSIC LOTTO Панель управления" class="img-fluid">
+                </picture>
+            </a>
+        </h1>
+    </div>
 
-            <form method="POST">
-                {% csrf_token %}
-                <div class="mb-3">
-                    <label for="ticket_count" class="form-label">Количество билетов:</label>
-                    <input 
-                        type="number" 
-                        name="ticket_count" 
-                        id="ticket_count" 
-                        class="form-control" 
-                        value="{{ default_ticket_count }}" 
-                        min="1" 
-                        required>
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Левая колонка (Кнопки управления) -->
+            <div class="col-md-3">
+                <div class="d-flex flex-column gap-3">
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" name="generate" class="btn w-100">Сгенерировать</button>
+                    </form>
+
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="ticket_count" class="form-label">Количество билетов:</label>
+                            <input type="number" name="ticket_count" id="ticket_count" class="form-control" value="{{ default_ticket_count }}" min="1" required>
+                        </div>
+                        <button type="submit" name="create_tickets" class="btn w-100">Создать билеты</button>
+                    </form>
+
+                    {% if tickets_pdf_exists %}
+                        <a href="{{ tickets_pdf_url }}" class="btn w-100" download>Скачать билеты</a>
+                    {% else %}
+                        <button class="btn btn-secondary w-100" disabled>Билеты не найдены</button>
+                    {% endif %}
+
+                    <form target="_blank" method="post" action="{% url 'music_lotto_tracks' music_lotto.id %}">
+                        {% csrf_token %}
+                        <button type="submit" name="show_tracks" class="btn w-100">Вывод треков</button>
+                    </form>
+
+                    <form action="{% url 'music_lotto_list' %}" method="get">
+                        <button type="submit" class="btn w-100">Вернуться к списку</button>
+                    </form>
                 </div>
-                <button type="submit" name="create_tickets" class="btn">Создать билеты</button>
-            </form>
+            </div>
 
-            {% if tickets_pdf_exists %}
-            <a href="{{ tickets_pdf_url }}" class="btn" download>Скачать билеты</a>
-            {% else %}
-                <button class="btn" disabled>Билеты не найдены</button>
-            {% endif %}
+            <!-- Средняя колонка (Таблица с треками) -->
+            <div class="col-md-6">
+                <div class="scrollable-table-container">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Название трека</th>
+                                <th>Действие</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for file in music_lotto.playlist_files.all %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ file.file.name }}</td>
+                                    <td><a href="{{ file.file.url }}" class="btn btn-sm" download>Скачать</a></td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="3" class="text-center">Треки не загружены.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-            <form method="post">
-                {% csrf_token %}
-                <button type="submit" name="show_tracks" class="btn btn-primary">Вывод треков</button>
-            </form>
+            <!-- Правая колонка (Выбор трека и состояние) -->
+            <div class="col-md-3">
+                <div class="d-flex flex-column gap-3">
+                    <div>
+                        <!-- <h2>Выбор трека</h2> -->
+                        <label for="track-input">Введите номер:</label>
+                        <input type="number" id="track-input" class="form-control" min="1" max="{{ music_lotto.playlist_files.count }}">
+                        <button class="btn w-100 mt-2" onclick="playTrack()">Воспроизвести</button>
+                    </div>
 
-            <form action="{% url 'music_lotto_list' %}" method="get" class="action-form">
-                <button type="submit" class="btn">Вернуться к списку</button>
-            </form>
-        </div>
+                    <div class="d-none">
+                        <h2>Состояние</h2>
+                        <p>Текущий трек: <span id="current-track">&mdash;</span></p>
+                        <p>Последние 10 треков: <span id="played-tracks">&mdash;</span></p>
+                    </div>
 
-        <!-- Прокручиваемая таблица -->
-        <div class="scrollable-table-container">
-            <table class="playlist-table">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Track Name</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for file in music_lotto.playlist_files.all %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ file.file.name }}</td>
-                        <td>
-                            <a href="{{ file.file.url }}" download>Download</a>
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="3">No playlist files uploaded.</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                    <div class="bingo-tabs-container">
+                        <ul class="nav nav-tabs" id="bingoTabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="one-tab" data-bs-toggle="tab" href="#one">One</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="triple-tab" data-bs-toggle="tab" href="#triple">Triple</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="full-tab" data-bs-toggle="tab" href="#full">Full</a>
+                            </li>
+                        </ul>
+                    
+                        <div class="tab-content bingo-scroll-container">
+                            <div class="bingo-content tab-pane fade show active" id="one">
+                                <p><span id="bingo-status"></span></p>
+                            </div>
+                            <div class="bingo-content tab-pane fade" id="triple">
+                                <p><span id="triple-bingo-status"></span></p>
+                            </div>
+                            <div class="bingo-content tab-pane fade" id="full">
+                                <p><span id="full-bingo-status"></span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <div class="bingo-container">
+                        <table class="table table-bordered text-center">
+                            <thead>
+                                <tr>
+                                    <th class="fw-bold">one</th>
+                                    <th class="fw-bold">triple</th>
+                                    <th class="fw-bold">full</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><p><span id="bingo-status"></span></p></td>
+                                    <td><p><span id="triple-bingo-status"></span></p></td>
+                                    <td><p><span id="full-bingo-status"></span></p></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div> -->
+
+                    <!-- <div>
+                        <h2>Информация о Bingo:</h2>
+                        <p><span id="bingo-status"></span></p>
+                        <p><span id="triple-bingo-status"></span></p>
+                        <p><span id="full-bingo-status"></span></p>
+                    </div> -->
+
+                    <audio id="audio-player" controls class="w-100 d-none">
+                        <source id="audio-source" src="" type="audio/mpeg">
+                        Ваш браузер не поддерживает аудиоэлемент.
+                    </audio>
+
+                    <button class="btn w-100" onclick="clearSession()">Очистить сессию</button>
+                </div>
+            </div>
         </div>
     </div>
+
+    <script>
+        const folderPath = "{{ folder_path|escapejs }}";  // Теперь путь корректный
+
+        function playTrack() {
+            const trackIdx = parseInt(document.getElementById('track-input').value, 10);
+            if (isNaN(trackIdx) || trackIdx < 1) {
+                alert('Введите корректный номер трека.');
+                return;
+            }
+
+            fetch("{% url 'play_track' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: `track_idx=${trackIdx - 1}&folder_path=${encodeURIComponent(folderPath)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    alert(data.message);
+
+                    document.getElementById('current-track').innerText = data.state.current_track;
+                    const playedTracksContainer = document.getElementById('played-tracks');
+                    playedTracksContainer.innerHTML = '';
+                    data.state.played_tracks.slice(-10).forEach(track => {
+                        const trackElement = document.createElement('span');
+                        trackElement.textContent = track;
+                        playedTracksContainer.appendChild(trackElement);
+                        playedTracksContainer.appendChild(document.createElement('br'));
+                    });
+
+                    document.getElementById('bingo-status').innerText = data.state.bingo_info;
+                    document.getElementById('triple-bingo-status').innerText = data.state.triple_bingo_info;
+                    document.getElementById('full-bingo-status').innerText = data.state.full_bingo_info;
+
+                    const audioPlayer = document.getElementById('audio-player');
+                    const audioSource = document.getElementById('audio-source');
+                    audioSource.src = data.track_url;
+                    audioPlayer.load();
+                    audioPlayer.play();
+
+                    // Сохраняем номер в localStorage
+                    let removedTracks = JSON.parse(localStorage.getItem('removedTracks')) || [];
+                    removedTracks.push(trackIdx);
+                    localStorage.setItem('removedTracks', JSON.stringify(removedTracks));
+
+                    // Уведомляем другую страницу
+                    notifyTracksPage();
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка:', error);
+                alert('Произошла ошибка при воспроизведении трека.');
+            });
+        }
+
+        function notifyTracksPage() {
+            fetch("{% url 'get_tracks_state' music_lotto.id %}")
+                .then(response => response.json())
+                .then(data => {
+                    localStorage.setItem('updatedTracks', JSON.stringify(data));
+                });
+        }
+    
+        function clearSession() {
+            fetch("{% url 'clear_session' %}", {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}"
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+
+                // Очистка введенных номеров треков
+                localStorage.removeItem('removedTracks');  
+                localStorage.removeItem('updatedTracks');  
+
+                location.reload();
+            })
+            .catch(error => {
+                console.error("Ошибка:", error);
+                alert("Ошибка при очистке сессии.");
+            });
+        }
+    </script>
 
 {% endblock %}

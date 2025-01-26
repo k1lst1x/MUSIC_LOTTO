@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block links %}
+	<link rel="stylesheet" href="{% static 'css/music_lotto_tracks.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- <h1>Список треков</h1> -->
+<div class="login-logo text-center">
+	<h1>
+		<a href="{% url 'home' %}" class="text-decoration-none">
+			<picture>
+				<source srcset="/static/MUSIC_LOTTO.png" media="(prefers-color-scheme: dark)">
+				<img src="/static/MUSIC_LOTTO.png" alt="MUSIC LOTTO Панель управления" class="img-fluid">
+			</picture>
+		</a>
+	</h1>
+</div>
+
+<div id="track-numbers-container">
+	{% for track in tracks %}
+		<span class="track-number" id="track-number-{{ forloop.counter }}">{{ forloop.counter }}</span>
+	{% endfor %}
+</div>	
+
+<!-- <h2>Последние 10 треков</h2> -->
+<ul id="recent-tracks">
+	<li><span id="played-tracks">&mdash;</span></li>
+</ul>
+
+<script>
+    function clearSession() {
+        fetch("{% url 'clear_session' %}", {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}"
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                alert("Сессия успешно очищена.");
+                location.reload();
+            } else {
+                alert("Ошибка при очистке сессии.");
+            }
+        })
+        .catch(error => {
+            console.error("Ошибка:", error);
+            alert("Произошла ошибка при очистке сессии.");
+        });
+    }
+</script>
+
+<script>
+    const folderPath = "{{ folder_path|escapejs }}";
+    function playTrack() {
+		const trackIdx = parseInt(document.getElementById('track-input').value, 10) - 1;
+		if (isNaN(trackIdx) || trackIdx < 0 || trackIdx >= {{ tracks|length }}) {
+			alert('Введите корректный номер трека.');
+			return;
+		}
+		fetch("{% url 'play_track' %}", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded",
+				"X-CSRFToken": "{{ csrf_token }}"
+			},
+			body: `track_idx=${trackIdx}&folder_path=${folderPath}`
+		})
+		.then(response => {
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return response.json();
+		})
+		.then(data => {
+			if (data.error) {
+				alert(data.error);
+			} else {
+				alert(data.message);
+
+				// Удаление трека из списка треков
+				const trackNumberElement = document.getElementById(`track-number-${trackIdx + 1}`);
+				if (trackNumberElement) {
+					trackNumberElement.remove();
+				}
+
+				// Обновление текущего трека и списка последних 10 треков
+				document.getElementById('current-track').innerText = data.state.current_track;
+				const playedTracksContainer = document.getElementById('played-tracks');
+				playedTracksContainer.innerHTML = ''; // Очистка списка
+				data.state.played_tracks.slice(-10).forEach(track => {
+					const trackElement = document.createElement('span');
+					trackElement.textContent = track;
+					playedTracksContainer.appendChild(trackElement);
+					playedTracksContainer.appendChild(document.createElement('br')); // Добавление переноса строки
+				});
+
+				// Обновление Bingo информации
+				document.querySelector('#bingo-info p:nth-child(1)').innerText = `Bingo: ${data.state.bingo_info}`;
+				document.querySelector('#bingo-info p:nth-child(2)').innerText = `Triple Bingo: ${data.state.triple_bingo_info}`;
+				document.querySelector('#bingo-info p:nth-child(3)').innerText = `Full Bingo: ${data.state.full_bingo_info}`;
+
+				// Воспроизведение аудио
+				const audioPlayer = document.getElementById('audio-player');
+				const audioSource = document.getElementById('audio-source');
+				audioSource.src = data.track_url;
+				audioPlayer.load();
+				audioPlayer.play();
+			}
+		})
+		.catch(error => {
+			console.error('Error:', error);
+			alert('Произошла ошибка при обработке запроса.');
+		});
+	}
+
+</script>
+
+<script>
+	function updateTracksList() {
+		const data = JSON.parse(localStorage.getItem('updatedTracks'));
+		const removedTracks = JSON.parse(localStorage.getItem('removedTracks')) || [];
+
+		if (!data) return;
+
+		// Обновляем список номеров треков (не удаляем все, а только введенные номера)
+		document.querySelectorAll(".track-number").forEach(trackEl => {
+			const trackNumber = parseInt(trackEl.textContent.trim(), 10);
+			if (removedTracks.includes(trackNumber)) {
+				trackEl.remove();
+			}
+		});
+
+		// Обновляем список последних 10 треков
+		const playedTracksContainer = document.getElementById('played-tracks');
+		playedTracksContainer.innerHTML = '';
+		data.played_tracks.forEach(track => {
+			const trackElement = document.createElement('span');
+			trackElement.textContent = track;
+			playedTracksContainer.appendChild(trackElement);
+			playedTracksContainer.appendChild(document.createElement('br'));
+		});
+
+		// Очищаем localStorage после обновления
+		localStorage.removeItem('updatedTracks');
+	}
+
+	// Проверяем localStorage каждые 2 секунды
+	setInterval(updateTracksList, 2000);
+</script>
+
+{% endblock %}

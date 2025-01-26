@@ -1,75 +1,149 @@
+/* Увеличенный заголовок */
 h1 {
     text-align: center;
     margin-top: 20px;
-    font-size: 2rem;
+    font-size: 3rem; /* Увеличен размер */
     color: #ffffff;
+    font-weight: bold;
 }
 
-/* Контейнер для кнопок и таблицы */
-.content-container {
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
+/* Основной контейнер */
+.container {
+    max-width: 95%;
 }
 
-/* Колонка кнопок */
-.btn-column {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-/* Прокручиваемая таблица */
+/* Контейнер для таблицы */
 .scrollable-table-container {
-    max-height: 300px; /* Максимальная высота таблицы */
-    overflow-y: auto; /* Прокрутка по вертикали */
-    border: 1px solid #fff;
-    border-radius: 5px;
-    padding: 10px;
-    background-color: none;
-}
-
-.playlist-table {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: left;
+    max-height: 500px; /* Увеличена высота */
+    overflow-y: auto;
+    border: 2px solid #fff; /* Сделана граница толще */
+    border-radius: 10px;
+    padding: 15px;
 }
 
 /* Прозрачная таблица */
-.playlist-table thead {
-    background-color: none; /* Полупрозрачный фон для заголовка */
-    position: sticky;
-    top: 0;
+.table {
+    font-size: 1.8rem; /* Увеличен размер текста */
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
 }
 
-.playlist-table th, .playlist-table td {
-    background-color: none; /* Полупрозрачный фон для ячеек */
+.table thead {
+    background-color: none;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+/* Поля ввода */
+.form-control {
+    font-size: 2rem; /* Увеличен текст */
+    margin-bottom: 10px;
+}
+
+/* Убираем лишние отступы */
+.mt-3, .mt-4 {
+    margin-top: 20px !important;
+}
+
+.gap-3 {
+    gap: 20px;
+}
+
+/* Увеличенный размер текста */
+p, label {
+    font-size: 2rem;
+}
+
+/* Увеличенные аудио-контроллы */
+#audio-player {
+    height: 70px;
+    width: 100%;
+}
+
+.bingo-container {
+    width: 100%;
+    max-width: 300px;
+    margin: auto;
+    border: 2px solid white;
     padding: 10px;
-    border: 1px solid #fff; /* Полупрозрачная граница */
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
 }
 
-.playlist-table tr:nth-child(even) {
-    background-color: none; /* Полупрозрачный серый фон для чётных строк */
+.table {
+    background-color: transparent;
+    color: rgb(245, 222, 222);
+    font-size: 1.5rem;
+    font-weight: bold;
 }
 
-.playlist-table tr:nth-child(odd) {
-    background-color: none; /* Полупрозрачный серый фон для нечётных строк */
-}
-
-.playlist-table tr:hover {
-    background-color: none; /* Полупрозрачный фон для строки при наведении */
-    color: #ffffff;
-}
-
-/* Оформление сообщений */
-.messages {
-    margin-bottom: 20px;
-}
-
-.messages .alert {
+th, td {
+    border: 1px solid white;
     padding: 10px;
-    border-radius: 5px;
-    font-size: 14px;
-    background-color: #4f0334;
-    color: #ffffff;
+    min-width: 50px;
+}
+
+.nav-link {
+    color: #fff;
+}
+
+.nav-link:hover {
+    color: #fff;
+}
+
+.bingo-tabs-container {
+    font-size: 1.5rem;
+}
+
+.bingo-tabs-container p {
+    font-size: 1.5rem;
+}
+
+.bingo-tabs-container {
+    width: 100%;
+    max-width: 350px;
+    margin: auto;
+    border: 2px solid white;
+    padding: 10px;
+    background-color: none;
+    border-radius: 8px;
+}
+
+.nav-tabs {
+    border-bottom: 2px solid white;
+}
+
+.nav-tabs .nav-link {
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: none;
+}
+
+.nav-tabs .nav-link.active {
+    background-color: white;
+    color: black;
+    border-radius: 5px 5px 0 0;
+}
+
+/* Ограничение высоты и скролл для Bingo */
+.bingo-scroll-container {
+    height: 150px;
+    max-height: 150px; /* Ограничение по высоте */
+    overflow-y: auto; /* Вертикальная прокрутка */
+    border: 1px solid white;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: none;
+}
+
+.bingo-content {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    min-height: 50px;
 }
