@@ -19,7 +19,7 @@
             </h1>
         </div>
         {% if user.is_authenticated %}
-            <h2>Добро пожаловать, {{ user.username }}!</h2>
+            <h2 class="text-center">Добро пожаловать, {{ user.username }}!</h2>
             <!-- <p>Рады видеть вас снова в MUSIC LOTTO.</p> -->
             <div class="centered-btn">
                 <a href="{% url 'music_lotto_list' %}" class="clickable-img-wrapper">

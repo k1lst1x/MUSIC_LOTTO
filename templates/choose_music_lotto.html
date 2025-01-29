@@ -6,8 +6,17 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Music Lottos</h1>
-    <a href="{% url 'create_music_lotto' %}" class="btn btn-primary">Create New Lotto</a>
+    <div class="login-logo text-center">
+        <h1>
+            <a href="{% url 'home' %}" class="text-decoration-none">
+                <picture>
+                    <source srcset="/static/MUSIC_LOTTO.png" media="(prefers-color-scheme: dark)">
+                    <img src="/static/MUSIC_LOTTO.png" alt="MUSIC LOTTO Панель управления" class="img-fluid">
+                </picture>
+            </a>
+        </h1>
+    </div>
+    <a href="{% url 'create_music_lotto' %}" class="btn btn-primary">Create New Bingo</a>
     <ul class="music-lotto-list">
         {% for lotto in music_lottos %}
             <li>

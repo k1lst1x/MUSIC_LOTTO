@@ -144,15 +144,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 JAZZMIN_SETTINGS = {
     # Основное
-    "site_title": "MUSIC LOTTO",
-    "site_header": "MUSIC LOTTO Панель управления",
-    "site_brand": "MUSIC LOTTO Admin",
+    "site_title": "MUSIC BINGO",
+    "site_header": "MUSIC BINGO Панель управления",
+    "site_brand": "MUSIC BINGO Admin",
     "site_logo": "/MUSIC_LOTTO.png",  # Логотип
     "site_logo_classes": "img-responsive shadow-sm",  # Классы оформления логотипа
     "site_logo_width": "128px",  # Ширина логотипа
     "site_logo_height": "auto",  # Пропорциональная высота
-    "welcome_sign": "Добро пожаловать в административный раздел MUSIC LOTTO",
-    "copyright": "MUSIC LOTTO © 2025",
+    "welcome_sign": "Добро пожаловать в административный раздел MUSIC BINGO",
+    "copyright": "MUSIC BINGO © 2025",
 
     # Верхнее меню
     "topmenu_links": [

@@ -6,7 +6,17 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Create Music Lotto</h1>
+    <div class="login-logo text-center">
+        <h1>
+            <a href="{% url 'home' %}" class="text-decoration-none">
+                <picture>
+                    <source srcset="/static/MUSIC_LOTTO.png" media="(prefers-color-scheme: dark)">
+                    <img src="/static/MUSIC_LOTTO.png" alt="MUSIC LOTTO Панель управления" class="img-fluid">
+                </picture>
+            </a>
+        </h1>
+    </div>
+    <h1>Create Music Bingo</h1>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}

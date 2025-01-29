@@ -47,6 +47,10 @@
                             <label for="ticket_count" class="form-label">Количество билетов:</label>
                             <input type="number" name="ticket_count" id="ticket_count" class="form-control" value="{{ default_ticket_count }}" min="1" required>
                         </div>
+                        <div class="mb-3">
+                            <label for="round_number" class="form-label">Номер раунда:</label>
+                            <input type="number" name="round_number" id="round_number" class="form-control" value="{{ default_round_number }}" min="1" required>
+                        </div>
                         <button type="submit" name="create_tickets" class="btn w-100">Создать билеты</button>
                     </form>
 
