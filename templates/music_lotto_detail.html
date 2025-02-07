@@ -60,10 +60,10 @@
                         <button class="btn btn-secondary w-100" disabled>Билеты не найдены</button>
                     {% endif %}
 
-                    <form target="_blank" method="post" action="{% url 'music_lotto_tracks' music_lotto.id %}">
+                    <!-- <form target="_blank" method="post" action="{% url 'music_lotto_tracks' music_lotto.id %}">
                         {% csrf_token %}
                         <button type="submit" name="show_tracks" class="btn w-100">Вывод треков</button>
-                    </form>
+                    </form> -->
 
                     <form action="{% url 'music_lotto_list' %}" method="get">
                         <button type="submit" class="btn w-100">Вернуться к списку</button>
@@ -173,6 +173,11 @@
                     </audio>
 
                     <button class="btn w-100" onclick="clearSession()">Очистить сессию</button>
+
+                    <form target="_blank" method="post" action="{% url 'music_lotto_tracks' music_lotto.id %}">
+                        {% csrf_token %}
+                        <button type="submit" name="show_tracks" class="btn w-100">Вывод треков</button>
+                    </form>
                 </div>
             </div>
         </div>

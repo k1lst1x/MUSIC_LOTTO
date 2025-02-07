@@ -129,7 +129,8 @@
 		document.querySelectorAll(".track-number").forEach(trackEl => {
 			const trackNumber = parseInt(trackEl.textContent.trim(), 10);
 			if (removedTracks.includes(trackNumber)) {
-				trackEl.remove();
+				// trackEl.remove();
+				trackEl.style.visibility = 'hidden';
 			}
 		});
 

@@ -14,7 +14,7 @@ h1 {
 
 /* Контейнер для таблицы */
 .scrollable-table-container {
-    max-height: 500px; /* Увеличена высота */
+    max-height: 600px; /* Увеличена высота */
     overflow-y: auto;
     border: 2px solid #fff; /* Сделана граница толще */
     border-radius: 10px;
@@ -147,3 +147,18 @@ th, td {
     text-align: center;
     min-height: 50px;
 }
+
+.bingo-tabs-container .nav-tabs {
+    display: flex;
+    width: 100%;
+}
+
+.bingo-tabs-container .nav-tabs .nav-item {
+    flex-grow: 1;
+    text-align: center;
+}
+
+.bingo-tabs-container .nav-tabs .nav-link {
+    width: 100%;
+}
+

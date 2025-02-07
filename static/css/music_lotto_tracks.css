@@ -12,7 +12,7 @@
 
 /* Стили номеров треков */
 .track-number {
-	font-size: 50px;
+	font-size: 46px;
     font-weight: 400;
     font-style: normal;
     color: rgb(255, 255, 255);
@@ -33,7 +33,7 @@
 
 /* Список последних треков */
 #recent-tracks li {
-	font-size: 40px;
+	font-size: 45px;
     font-weight: 400;
     font-style: normal;
     color: rgb(255, 255, 255);
