@@ -1,11 +1,14 @@
 from django.db import models
 from django.utils.text import get_valid_filename
 from django.core.files.storage import FileSystemStorage
+from django.conf import settings
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
 import os
+import shutil
 
 class CustomFileSystemStorage(FileSystemStorage):
     def get_valid_name(self, name):
-        # Сохраняем пробелы, вместо замены их на подчёркивания
         return get_valid_filename(name).replace("_", " ")
 
 custom_storage = CustomFileSystemStorage()
@@ -27,7 +30,6 @@ class MusicLotto(models.Model):
     def __str__(self):
         return self.name or f"Music Lotto #{self.id}"
 
-
 class PlaylistFile(models.Model):
     music_lotto = models.ForeignKey(
         MusicLotto, 
@@ -39,3 +41,17 @@ class PlaylistFile(models.Model):
 
     def __str__(self):
         return os.path.basename(self.file.name)
+
+# Сигнал для удаления папки при удалении MusicLotto
+@receiver(pre_delete, sender=MusicLotto)
+def delete_music_lotto_folder(sender, instance, **kwargs):
+    """Удаляет папку с файлами лотереи перед её удалением."""
+    folder_path = os.path.join(settings.MEDIA_ROOT, f'music_lotto/{instance.id}')
+    
+    # Удаляем файлы в базе
+    for file in instance.playlist_files.all():
+        file.file.delete(save=False)  # Физическое удаление файлов
+
+    # Удаляем саму папку
+    if os.path.exists(folder_path):
+        shutil.rmtree(folder_path)
