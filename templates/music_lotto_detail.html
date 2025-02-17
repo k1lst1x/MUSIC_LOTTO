@@ -6,6 +6,13 @@
 {% endblock %}
 
 {% block content %}
+    <style>
+        body {
+            transform: scale(0.8);
+            transform-origin: top; /* Это гарантирует, что масштабирование будет происходить от верхнего левого угла */
+            overflow: hidden;
+        }
+    </style>
     {% if messages %}
     <div class="messages">
         {% for message in messages %}
@@ -280,6 +287,7 @@
             if (event.key === 'Enter') {
                 event.preventDefault(); // предотвращает отправку формы, если она есть
                 playTrack(); // вызываем функцию воспроизведения
+                this.value = ''; // очищаем поле ввода после вызова функции
             }
         });
     </script>
