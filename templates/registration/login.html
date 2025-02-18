@@ -18,8 +18,6 @@
                 </a>
             </h1>
         </div>
-        <h1>Логин</h1>
-        <hr>
 
         {% if form.errors %}
             <p>{{ form.errors.error }}</p>
@@ -30,10 +28,10 @@
         {{ form }}
         <button type="submit" class="btn btn-success">Войти</button>
         </form>
-        <hr>
+        <!-- <hr>
         У вас нет учетной записи?  <a href="{% url 'register' %}">Зарегистрироваться</a>
         <br>
-        <a href="{% url 'password_reset' %}">Забыли пароль?</a>
+        <a href="{% url 'password_reset' %}">Забыли пароль?</a> -->
     </div>
 </div>
 {% endblock %}

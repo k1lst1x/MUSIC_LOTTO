@@ -66,13 +66,13 @@ a.btn.btn-primary:hover {
 }
 
 .music-lotto-list p a {
-    color: #4f0334;
+    color: #fff; /* Светло-розовый */
     text-decoration: none;
 }
 
 .music-lotto-list p a:hover {
     text-decoration: underline;
-    color: #670447;
+    color: #ffaad4; /* Ещё более светлый розовый */
 }
 
 /* Адаптивность */

@@ -26,7 +26,7 @@ body {
     color: #ffffff !important; /* Белый текст */
 }
 .sidebar a:hover {
-    color: #7a044e !important; /* Бордовый текст при наведении */
+    color: #fff !important; /* Бордовый текст при наведении */
 }
 
 .sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active,
@@ -68,12 +68,12 @@ body {
 
 /* Заголовки */
 h1, h2, h3, h4, h5, h6 {
-    color: #7a044e !important; /* Бордовый цвет заголовков */
+    color: #fff !important; /* Бордовый цвет заголовков */
 }
 
 /* Ссылки */
 a {
-    color: #7a044e !important; /* Бордовый цвет ссылок */
+    color: #fff !important; /* Бордовый цвет ссылок */
 }
 a:hover {
     color: #ffffff !important; /* Белый цвет ссылок при наведении */

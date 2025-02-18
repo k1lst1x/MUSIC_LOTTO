@@ -16,10 +16,10 @@
             </a>
         </h1>
     </div>
-    <h1>Create Music Bingo</h1>
+    <h1>Создай Music Bingo</h1>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Upload</button>
+        <button type="submit">Загрузить</button>
     </form>
 {% endblock %}
