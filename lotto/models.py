@@ -45,9 +45,10 @@ class PlaylistFile(models.Model):
 # Сигнал для удаления папки при удалении MusicLotto
 @receiver(pre_delete, sender=MusicLotto)
 def delete_music_lotto_folder(sender, instance, **kwargs):
-    """Удаляет папку с файлами лотереи перед её удалением."""
+    """Удаляет папку с файлами лотереи перед её удалением, а также файл 3.xlsx."""
     folder_path = os.path.join(settings.MEDIA_ROOT, f'music_lotto/{instance.id}')
-    
+    xlsx_file_path = os.path.join(settings.MEDIA_ROOT, f'music_lotto/{instance.id}.xlsx')
+
     # Удаляем файлы в базе
     for file in instance.playlist_files.all():
         file.file.delete(save=False)  # Физическое удаление файлов
@@ -55,3 +56,7 @@ def delete_music_lotto_folder(sender, instance, **kwargs):
     # Удаляем саму папку
     if os.path.exists(folder_path):
         shutil.rmtree(folder_path)
+
+    # Удаляем файл .xlsx
+    if os.path.exists(xlsx_file_path):
+        os.remove(xlsx_file_path)

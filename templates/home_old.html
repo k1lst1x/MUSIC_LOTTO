@@ -20,6 +20,7 @@
         </div>
         {% if user.is_authenticated %}
             <h2 class="text-center">Добро пожаловать, {{ user.username }}!</h2>
+            <!-- <p>Рады видеть вас снова в MUSIC LOTTO.</p> -->
             <div class="centered-btn">
                 <a href="{% url 'music_lotto_list' %}" class="clickable-img-wrapper">
                     <img src="/static/headphones.svg" 
@@ -32,9 +33,15 @@
                 <button type="submit" class="btn btn-danger">Выйти</button>
             </form>
         {% else %}
+            <!-- <h2>Приветствуем вас в MUSIC LOTTO!</h2>
+            <p>Войдите в систему или зарегистрируйтесь, чтобы начать.</p> -->
             <form action="{% url 'login' %}" method="get" class="action-form">
                 <button type="submit" class="btn btn-primary">Войти</button>
             </form>
+            <!-- <hr>
+            <form action="{% url 'register' %}" method="get" class="action-form">
+                <button type="submit" class="btn btn-secondary">Зарегистрироваться</button>
+            </form> -->
         {% endif %}
     </div>
 </div>
