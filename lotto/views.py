@@ -18,15 +18,26 @@ python_executable = sys.executable
 def create_music_lotto(request):
     if request.method == 'POST':
         form = MusicLottoForm(request.POST, request.FILES)
-        files = request.FILES.getlist('playlist_files')  # Получаем список загруженных файлов
+        files = request.FILES.getlist('playlist_files')
+
         if form.is_valid():
             music_lotto = form.save()  # Сохраняем основной объект
-            for file in files:
-                # Создаём объект PlaylistFile для каждого файла
-                PlaylistFile.objects.create(music_lotto=music_lotto, file=file)
-            return redirect('music_lotto_list')  # Перенаправляем на страницу успеха
+
+            # Оптимизированное сохранение файлов
+            playlist_files = [
+                PlaylistFile(music_lotto=music_lotto, file=file)
+                for file in files
+            ]
+            PlaylistFile.objects.bulk_create(playlist_files)  # Один запрос в БД вместо множества
+
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({"status": "success", "redirect_url": "/music-lotto/choose-music-lotto/"})
+
+            return redirect('music_lotto_list')
+
     else:
         form = MusicLottoForm()
+
     return render(request, 'create_music_lotto.html', {'form': form})
 
 @login_required(login_url='/users/login/?/')

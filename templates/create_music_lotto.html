@@ -17,9 +17,35 @@
         </h1>
     </div>
     <h1>Создай Music Bingo</h1>
-    <form method="post" enctype="multipart/form-data">
+    <form id="music-lotto-form" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Загрузить</button>
+        <div id="upload-status"></div>
     </form>
+    
+    <script>
+    document.getElementById("music-lotto-form").addEventListener("submit", async function(event) {
+        event.preventDefault();
+    
+        let formData = new FormData(this);
+        let statusDiv = document.getElementById("upload-status");
+        statusDiv.innerHTML = "Загрузка...";
+    
+        let response = await fetch("{% url 'create_music_lotto' %}", {
+            method: "POST",
+            body: formData,
+            headers: {
+                "X-Requested-With": "XMLHttpRequest"
+            }
+        });
+    
+        let result = await response.json();
+        if (result.status === "success") {
+            window.location.href = result.redirect_url;
+        } else {
+            statusDiv.innerHTML = "Ошибка загрузки!";
+        }
+    });
+    </script>    
 {% endblock %}
