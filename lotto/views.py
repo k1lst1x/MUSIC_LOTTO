@@ -57,7 +57,7 @@ def music_lotto_detail(request, id):
 
     # Проверка наличия PDF-файла
     tickets_pdf_exists = os.path.exists(tickets_pdf_path)
-    tickets_pdf_url = f"/{folder_path}/tickets.pdf" if tickets_pdf_exists else None
+    tickets_pdf_url = f"/{tickets_pdf_path}" if tickets_pdf_exists else None
 
     if request.method == 'POST':
         # Обработка кнопки "Сгенерировать"
@@ -84,26 +84,32 @@ def music_lotto_detail(request, id):
         # Обработка кнопки "Создать билеты"
         elif 'create_tickets' in request.POST:
             ticket_count = request.POST.get('ticket_count', 1)
-            round_number = request.POST.get('round_number', 1)  # Получаем номер раунда
+            round_number = request.POST.get('round_number', 1)
+
             if not os.path.exists(excel_file_path):
                 messages.error(request, "Файл с треками не найден. Сначала сгенерируйте его.")
                 return redirect('music_lotto_detail', id=id)
 
             try:
-                script_path = os.path.join(os.path.dirname(__file__), 'tickets.py')
-                result = subprocess.run(
-                    [sys.executable, script_path, str(ticket_count), excel_file_path, folder_path, str(round_number)],
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE,
-                    text=True
-                )
-                if result.returncode == 0:
-                    messages.success(request, "Билеты успешно созданы.")
-                else:
-                    messages.error(request, f"Ошибка создания билетов: {result.stderr}")
-            except Exception as e:
-                messages.error(request, f"Ошибка выполнения команды: {str(e)}")
+                # Удаляем старый PDF, если есть
+                if os.path.exists(tickets_pdf_path):
+                    os.remove(tickets_pdf_path)
 
+                script_path = os.path.join(os.path.dirname(__file__), 'tickets.py')
+                os.makedirs(folder_path, exist_ok=True)
+
+                # Запуск генерации в фоне
+                subprocess.Popen(
+                    [sys.executable, script_path, str(ticket_count), excel_file_path, folder_path, str(round_number)],
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL
+                )
+
+                messages.success(request, "Создание билетов запущено в фоне. Проверьте PDF через некоторое время.")
+            except Exception as e:
+                messages.error(request, f"Ошибка запуска генерации билетов: {str(e)}")
+
+        # Переход к трекам
         elif 'show_tracks' in request.POST:
             return redirect('music_lotto_tracks', id=id)
 
@@ -115,7 +121,7 @@ def music_lotto_detail(request, id):
         'folder_path': folder_path,
         'default_ticket_count': 1,
         'default_round_number': 1,
-        'tickets_pdf_exists': tickets_pdf_exists,
+        'tickets_pdf_exists': os.path.exists(tickets_pdf_path),  # ещё раз проверка
         'tickets_pdf_url': tickets_pdf_url,
     })
 
