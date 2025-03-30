@@ -206,3 +206,105 @@ JAZZMIN_UI_TWEAKS = {
         "secondary": "btn-outline-light",  # Альтернативный стиль кнопок
     },
 }
+
+# Настройки логов
+LOG_DIR = os.path.join(BASE_DIR, 'django_logs')
+os.makedirs(LOG_DIR, exist_ok=True)
+
+# 15 MB на файл, 3 бэкапа - 4 итог
+MAX_LOG_SIZE = 15 * 1024 * 1024  
+LOG_BACKUPS = 3
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+
+    'formatters': {
+        'verbose': {
+            'format': '%(asctime)s [%(levelname)s] %(name)s %(pathname)s:%(lineno)d\n%(message)s'
+        },
+        'simple': {
+            'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s'
+        },
+        'django_simple': {
+            'format': '[%(levelname)s] %(message)s'
+        },
+        'sql_formatter': {
+            'format': '%(asctime)s [SQL] %(message)s'
+        },
+    },
+
+    'handlers': {
+        'error_file': {
+            'level': 'WARNING',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOG_DIR, 'errors.log'),
+            'formatter': 'verbose',
+            'maxBytes': MAX_LOG_SIZE,
+            'backupCount': LOG_BACKUPS,
+            'encoding': 'utf-8',
+        },
+        'info_file': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOG_DIR, 'info.log'),
+            'formatter': 'simple',
+            'maxBytes': MAX_LOG_SIZE,
+            'backupCount': LOG_BACKUPS,
+            'encoding': 'utf-8',
+        },
+        'db_file': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOG_DIR, 'db.log'),
+            'formatter': 'sql_formatter',
+            'maxBytes': MAX_LOG_SIZE,
+            'backupCount': LOG_BACKUPS,
+            'encoding': 'utf-8',
+        },
+        'django_console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'django_simple',
+        },
+        'debug_console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+            'filters': ['require_debug_true'],
+        },
+    },
+
+    'loggers': {
+        'django': {
+            'handlers': ['info_file', 'error_file', 'django_console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'django.request': {
+            'handlers': ['info_file', 'error_file', 'django_console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'django.db.backends': {
+            'handlers': ['db_file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'django.server': {
+            'handlers': ['django_console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+
+    'root': {
+        'handlers': ['info_file', 'error_file', 'debug_console'],
+        'level': 'DEBUG',
+    },
+}
