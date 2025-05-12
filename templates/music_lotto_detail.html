@@ -79,7 +79,7 @@
             </div>
 
             <!-- Средняя колонка (Таблица с треками) -->
-            <div class="col-md-6">
+            <!-- <div class="col-md-6">
                 <div class="scrollable-table-container">
                     <table class="table table-bordered table-hover">
                         <thead>
@@ -103,6 +103,20 @@
                             {% endfor %}
                         </tbody>
                     </table>
+                </div>
+            </div> -->
+            <div class="col-md-6">
+                <div class="track-status py-4 px-2">
+            
+                    <h2 class="h2 text-center fw-bold mb-4">🎧 Сейчас играет</h2>
+                    <p class="display-6 text-center mb-5" id="current-track">&mdash;</p>
+            
+                    <h3 class="h2 fw-bold mb-3 text-center">Последние 10 треков</h3>
+                    <ul id="recent-tracks"
+                        class="display-6 text-center played-tracks list-unstyled d-flex flex-column gap-1 align-items-center">
+                        <li><span id="played-tracks">&mdash;</span></li>
+                    </ul>
+            
                 </div>
             </div>
 
