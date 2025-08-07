@@ -173,27 +173,28 @@ def read_tickets_file(folder_path):
         tickets = pickle.load(f)
     return [np.array(ticket).reshape(5, 5) for ticket in tickets]
 
-def check_bingo(ticket, played_tracks, current_track):
+def check_bingo(ticket, played_set):
     bingo_results = []
-
-    # Проверяем строки и столбцы
+    # строки и столбцы
     for i in range(5):
         row = ticket[i, :]
-        column = ticket[:, i]
-        if all(x in played_tracks for x in row):
+        col = ticket[:, i]
+        if all(x in played_set for x in row):
             bingo_results.append(f"Ряд {i+1}")
-        if all(x in played_tracks for x in column):
+        if all(x in played_set for x in col):
             bingo_results.append(f"Колонка {i+1}")
-
-    # Проверяем диагонали
+    # диагонали
     main_diag = [ticket[i, i] for i in range(5)]
     sec_diag = [ticket[i, 4 - i] for i in range(5)]
-    if all(x in played_tracks for x in main_diag):
+    if all(x in played_set for x in main_diag):
         bingo_results.append("Главная диагональ")
-    if all(x in played_tracks for x in sec_diag):
+    if all(x in played_set for x in sec_diag):
         bingo_results.append("Вторая диагональ")
-
     return bingo_results
+
+def is_full_bingo(ticket, played_set):
+    # blackout — закрыты все 25 клеток
+    return all(x in played_set for x in ticket.flatten())
 
 @login_required(login_url='/users/login/?/')
 def music_lotto_tracks(request, id):
@@ -240,6 +241,8 @@ def play_track(request):
             state['played_tracks'].append(tracks[track_idx])
 
             print(f"Текущий трек обновлен: {state['current_track']}, сыгранные треки: {state['played_tracks']}")
+            
+            played_set = set(state['played_tracks'])
 
             # Определение Bingo
             bingo_tickets = []
@@ -247,7 +250,7 @@ def play_track(request):
             full_bingo_tickets = []
 
             for idx, ticket in enumerate(state['tickets']):
-                bingo_results = check_bingo(ticket, state['played_tracks'], state['current_track'])
+                bingo_results = check_bingo(ticket, played_set)
 
                 if bingo_results:
                     bingo_tickets.append(idx + 1)
@@ -255,7 +258,7 @@ def play_track(request):
                 if len(bingo_results) >= 3:
                     triple_bingo_tickets.append(idx + 1)
 
-                if len(bingo_results) >= 5:  # Полное бинго, если есть 5 и более совпадений
+                if is_full_bingo(ticket, played_set):   # <-- вот ключевая правка
                     full_bingo_tickets.append(idx + 1)
 
             # Обновляем информацию о Bingo
